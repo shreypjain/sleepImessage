@@ -1,24 +1,27 @@
 from flask import Flask, request, jsonify
+from sleep import sleepMessage
 from py_imessage import imessage
 
 app = Flask(__name__)
 
 @app.route('/api/send', methods=['GET', 'POST'])
 def send_message():
-    # import pdb; pdb.set_trace();
-    phone = request.form.get("phone")
-    text = request.form.get("text")
+    return(jsonify(sleepMessage(request.form.get("phone"),request.form.get("message"))))
 
-    if text:
-        message = text
-    else:
-        message = "Thanks for checking out balto!"
-    # https://stackoverflow.com/questions/5137497/find-current-directory-and-files-directory
+    # # import pdb; pdb.set_trace();
+    # phone = request.form.get("phone")
+    # text = request.form.get("text")
+
+    # if text:
+    #     message = text
+    # else:
+    #     message = "Thanks for checking out balto!"
+    # # https://stackoverflow.com/questions/5137497/find-current-directory-and-files-directory
     # TODO: write this as a better experienc
 
-    guid = imessage.send(phone, text)
+    # guid = imessage.send(phone, text)
 
-    return jsonify({'guid': guid})
+    # return jsonify({'guid': guid})
 
 @app.route("/api/status/<guid>", methods=['GET'])
 def message_status(guid): 
