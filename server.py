@@ -1,12 +1,17 @@
 from flask import Flask, request, jsonify
 from sleep import sleepMessage
 from py_imessage import imessage
+import socket
 
 app = Flask(__name__)
+ip = socket.gethostbyname(socket.gethostname())
 
 @app.route('/api/send', methods=['GET', 'POST'])
 def send_message():
-    return(jsonify(sleepMessage(request.form.get("phone"),request.form.get("message"))))
+    if request.method == 'POST':
+        return(jsonify(sleepMessage(request.form.get("phone"),request.form.get("message"))))
+    else:
+        return(jsonify(sleepMessage(request.args.get("phone"), request.args.get("message"))))
 
     # # import pdb; pdb.set_trace();
     # phone = request.form.get("phone")
@@ -36,7 +41,7 @@ def is_imessage_capable(phone):
 
 @app.route('/')
 def index():
-    return 'Hello World!'
+    return 'Hello Stealth Mode !'
 
 if __name__ == '__main__':
-    app.run(host='127.0.0.1', port=5555)
+    app.run(host=ip, port=5555)
